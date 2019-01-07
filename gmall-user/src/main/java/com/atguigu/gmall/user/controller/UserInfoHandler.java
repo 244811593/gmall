@@ -17,7 +17,8 @@ public class UserInfoHandler {
     @RequestMapping("index")
     @ResponseBody
     public List<UserInfo> UserList() {
-        List<UserInfo> list=  userService.getUserAll();
+        List<UserInfo> list=  userService.selectUserAll();
+
 
         return list;
     }

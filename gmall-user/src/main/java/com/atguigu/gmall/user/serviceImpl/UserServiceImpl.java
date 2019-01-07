@@ -13,9 +13,33 @@ import java.util.List;
 public class UserServiceImpl implements UserInfoService {
 @Autowired
     UserInfoMapper userInfoMapper;
-
     @Override
-    public List<UserInfo> getUserAll() {
+    public List<UserInfo> selectUserAll() {
         return userInfoMapper.selectAll();
     }
+
+    @Override
+    public UserInfo selectById(String userid) {
+        UserInfo userInfo = userInfoMapper.selectByPrimaryKey(userid);
+        return userInfo;
+    }
+
+    @Override
+    public void addUserInfo(UserInfo userInfo) {
+        userInfoMapper.insert(userInfo);
+    }
+
+    @Override
+    public Integer updateUserInfo(UserInfo userInfo) {
+
+        return userInfoMapper.updateByPrimaryKey(userInfo);
+    }
+
+    @Override
+    public void deleteUserInfoById(String userid) {
+        userInfoMapper.deleteByPrimaryKey(userid);
+
+    }
+
+
 }
