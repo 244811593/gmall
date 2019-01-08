@@ -1,8 +1,6 @@
-package com.atguigu.gmall.user.service;
+package com.atguigu.gmall.service;
 
-import com.atguigu.gmall.user.bean.UserAddress;
-import com.atguigu.gmall.user.mapper.UserAddressMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.atguigu.gmall.bean.UserAddress;
 
 import java.util.List;
 

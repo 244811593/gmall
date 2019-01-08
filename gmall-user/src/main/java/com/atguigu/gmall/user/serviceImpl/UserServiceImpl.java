@@ -1,45 +1,50 @@
 package com.atguigu.gmall.user.serviceImpl;
 
-import com.atguigu.gmall.user.bean.UserInfo;
+import com.alibaba.dubbo.config.annotation.Service;
+import com.atguigu.gmall.bean.UserAddress;
+import com.atguigu.gmall.bean.UserInfo;
+import com.atguigu.gmall.user.mapper.UserAddressMapper;
 import com.atguigu.gmall.user.mapper.UserInfoMapper;
-import com.atguigu.gmall.user.service.UserInfoService;
+import com.atguigu.gmall.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 
 @Service
 public class UserServiceImpl implements UserInfoService {
+
 @Autowired
     UserInfoMapper userInfoMapper;
+@Autowired
+UserAddressMapper userAddressMapper ;
+
     @Override
-    public List<UserInfo> selectUserAll() {
+    public List<UserInfo> getUserInfoListAll() {
         return userInfoMapper.selectAll();
+
     }
 
     @Override
-    public UserInfo selectById(String userid) {
-        UserInfo userInfo = userInfoMapper.selectByPrimaryKey(userid);
-        return userInfo;
+    public void addUser(UserInfo userInfo) {
+
     }
 
     @Override
-    public void addUserInfo(UserInfo userInfo) {
-        userInfoMapper.insert(userInfo);
+    public void updateUser(String id, UserInfo userInfo) {
+
     }
 
     @Override
-    public Integer updateUserInfo(UserInfo userInfo) {
+    public List<UserAddress> getUserAddressList(String userId) {
 
-        return userInfoMapper.updateByPrimaryKey(userInfo);
-    }
 
-    @Override
-    public void deleteUserInfoById(String userid) {
-        userInfoMapper.deleteByPrimaryKey(userid);
+        return null;
+
+
 
     }
-
-
 }
+
+
+

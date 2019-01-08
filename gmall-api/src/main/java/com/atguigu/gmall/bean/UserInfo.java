@@ -1,6 +1,6 @@
-package com.atguigu.gmall.user.bean;
+package com.atguigu.gmall.bean;
 
-import org.springframework.stereotype.Component;
+
 
 
 public class UserInfo {

@@ -1,4 +1,4 @@
-package com.atguigu.gmall.user.bean;
+package com.atguigu.gmall.bean;
 
 public class UserAddress {
     Integer id;

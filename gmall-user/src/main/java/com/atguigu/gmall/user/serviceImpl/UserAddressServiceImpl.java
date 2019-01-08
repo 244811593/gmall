@@ -1,10 +1,10 @@
 package com.atguigu.gmall.user.serviceImpl;
 
-import com.atguigu.gmall.user.bean.UserAddress;
+import com.alibaba.dubbo.config.annotation.Service;
+import com.atguigu.gmall.bean.UserAddress;
 import com.atguigu.gmall.user.mapper.UserAddressMapper;
-import com.atguigu.gmall.user.service.UserAddressService;
+import com.atguigu.gmall.service.UserAddressService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
@@ -41,6 +41,7 @@ public class UserAddressServiceImpl implements UserAddressService {
         criteria.andEqualTo("userId", userId);
         List<UserAddress> userAddresses = userAddressMapper.selectByExample(example);
         return userAddresses;
+        
     }
 
 }
