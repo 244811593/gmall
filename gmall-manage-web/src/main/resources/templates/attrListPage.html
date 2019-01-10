@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table id="dg" class="easyui-datagrid" title="平台属性列表" style="height:350px"
+       data-options="toolbar:'#tb',singleSelect:true,collapsible:true,url:'datagrid_data1.json',method:'get'">
+    <thead>
+    <tr>
+        <th data-options="field:'id',width:80">平台属性ID</th>
+        <th data-options="field:'attrName',width:100">平台属性名称</th>
+    </tr>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" style="width: 80px">添加</a>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit' " style="width: 80px">编辑</a>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove'" style="width: 80px">删除</a>
+    <br/>
+    一级分类<select class="easyui-combobox" data-options="url:'getCatalog1',valueField:'id',textField:'name',
+        onSelect: function(rec){
+            var url = 'getCatalog2?catalog1Id='+rec.id;
+            $('#ctg2ForAttrList').combobox('clear');
+            $('#ctg2ForAttrList').combobox('reload', url);
+        }" style="width: 100px"></select>
+    二级分类<select data-options="valueField:'id',textField:'name',
+      onSelect: function(rec){
+            var url = 'getCatalog3?catalog2Id='+rec.id;
+            $('#ctg3ForAttrList').combobox('clear');
+            $('#ctg3ForAttrList').combobox('reload', url);
+        }
+" id="ctg2ForAttrList" class="easyui-combobox" style="width: 100px"></select>
+    三级分类<select data-options="valueField:'id',textField:'name'" id="ctg3ForAttrList" class="easyui-combobox"
+                style="width: 100px"></select>
+    <a href="javascript:reloadAttrList();" class="easyui-linkbutton" data-options="iconCls:'icon-reload',plain:true">刷新属性</a>
+    <br/><br/>
+    </thead>
+</table>
+<script>
+    function reloadAttrList() {
+        var catalog3Id = $('#ctg3ForAttrList').combobox('getValues');
+
+        $('#dg').datagrid({
+            url:'getAttrList?catalog3Id='+catalog3Id
+
+        });
+    }
+
+
+</script>
+
+</body>
+</html>
