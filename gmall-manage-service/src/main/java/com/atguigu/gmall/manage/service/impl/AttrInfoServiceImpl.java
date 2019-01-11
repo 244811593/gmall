@@ -1,14 +1,8 @@
 package com.atguigu.gmall.manage.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
-import com.atguigu.gmall.bean.BaseAttrInfo;
-import com.atguigu.gmall.bean.BaseCatalog1;
-import com.atguigu.gmall.bean.BaseCatalog2;
-import com.atguigu.gmall.bean.BaseCatalog3;
-import com.atguigu.gmall.manage.mapper.BaseAttrInfoMapper;
-import com.atguigu.gmall.manage.mapper.BaseCatalog1Mapper;
-import com.atguigu.gmall.manage.mapper.BaseCatalog2Mapper;
-import com.atguigu.gmall.manage.mapper.BaseCatalog3Mapper;
+import com.atguigu.gmall.bean.*;
+import com.atguigu.gmall.manage.mapper.*;
 import com.atguigu.gmall.service.BaseAttrInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -17,14 +11,15 @@ import java.util.List;
 @Service
 public class AttrInfoServiceImpl implements BaseAttrInfoService {
     @Autowired
-    BaseAttrInfoMapper baseAttrinfoMapepr;
+    BaseAttrInfoMapper baseAttrInfoMapper;
     @Autowired
     BaseCatalog1Mapper baseCatalog1Mapper;
     @Autowired
     BaseCatalog2Mapper baseCatalog2Mapper;
     @Autowired
     BaseCatalog3Mapper baseCatalog3Mapper;
-
+    @Autowired
+    BaseAttrValueMapper baseAttrValueMapper;
     public List<BaseCatalog1> getBaseCatalog1() {
         List<BaseCatalog1> baseCatalog1List = baseCatalog1Mapper.selectAll();
         return baseCatalog1List;
@@ -50,9 +45,47 @@ public class AttrInfoServiceImpl implements BaseAttrInfoService {
     public List<BaseAttrInfo> getAttrList(String catalog3Id) {
         BaseAttrInfo baseAttrInfo = new BaseAttrInfo();
         baseAttrInfo.setCatalog3Id(catalog3Id);
-        List<BaseAttrInfo> baseAttrInfoList=baseAttrinfoMapepr.select(baseAttrInfo);
+        List<BaseAttrInfo> baseAttrInfoList=baseAttrInfoMapper.select(baseAttrInfo);
 
         return baseAttrInfoList;
+    }
+//保存平台属性和属性值
+    @Override
+    public void saveAttr(BaseAttrInfo baseAttrInfo) {
+        baseAttrInfoMapper.insert(baseAttrInfo);
+
+        String baseAttrInfoId = baseAttrInfo.getId();
+        List<BaseAttrValue> attrValueList = baseAttrInfo.getAttrValueList();
+
+        for (BaseAttrValue baseAttrValue:attrValueList ) {
+            baseAttrValue.setAttrId(baseAttrInfoId);
+            baseAttrValueMapper.insert(baseAttrValue);
+        }
+    }
+
+    @Override
+    public List<BaseAttrValue> getAttrValueList(String attrId) {
+        BaseAttrValue baseAttrValue = new BaseAttrValue();
+        baseAttrValue.setAttrId(attrId);
+        List<BaseAttrValue> baseAttrValueList = baseAttrValueMapper.select(baseAttrValue);
+        return baseAttrValueList;
+    }
+
+    @Override
+    public void saveEditAttr(BaseAttrInfo baseAttrInfo) {
+        String AttrId = baseAttrInfo.getId();
+        //修改后的属性
+        List<BaseAttrValue> attrValueList = baseAttrInfo.getAttrValueList();
+        //按照attrId查询所有的value对象集合
+        BaseAttrValue baseAttrValue1 = new BaseAttrValue();
+        baseAttrValue1.setAttrId(AttrId);
+        baseAttrValueMapper.delete(baseAttrValue1);
+
+        for (BaseAttrValue baseAttrValue:attrValueList) {
+            baseAttrValue.setAttrId(AttrId);
+            baseAttrValueMapper.insert(baseAttrValue);
+
+        }
     }
 
 

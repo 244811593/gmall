@@ -1,10 +1,7 @@
 package com.atguigu.gmall.manage.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.atguigu.gmall.bean.BaseAttrInfo;
-import com.atguigu.gmall.bean.BaseCatalog1;
-import com.atguigu.gmall.bean.BaseCatalog2;
-import com.atguigu.gmall.bean.BaseCatalog3;
+import com.atguigu.gmall.bean.*;
 import com.atguigu.gmall.service.BaseAttrInfoService;
 
 import org.springframework.stereotype.Controller;
@@ -18,6 +15,13 @@ public class AttrController {
     @Reference
     BaseAttrInfoService attrInfoService;
 
+    //编辑页面显示属性值
+    @RequestMapping("getAttrValueList")
+    @ResponseBody
+    public List<BaseAttrValue> getAttrValueList(String attrId) {
+        List<BaseAttrValue> BaseAttrValueList = attrInfoService.getAttrValueList(attrId);
+        return BaseAttrValueList;
+    }
 
     @RequestMapping("getCatalog1")
     @ResponseBody
@@ -33,12 +37,14 @@ public class AttrController {
         List<BaseCatalog2> baseCatalog2 = attrInfoService.getBaseCatalog2(catalog1Id);
         return baseCatalog2;
     }
+
     @RequestMapping("getCatalog3")
     @ResponseBody
     public List<BaseCatalog3> getBaseCatalog3List(String catalog2Id) {
         List<BaseCatalog3> baseCatalog3 = attrInfoService.getBaseCatalog3(catalog2Id);
         return baseCatalog3;
     }
+
     @RequestMapping("getAttrList")
     @ResponseBody
     public List<BaseAttrInfo> getAttrList(String catalog3Id) {
@@ -46,4 +52,21 @@ public class AttrController {
         return baseAttrInfoList;
     }
 
+    //保存添加属性
+    @RequestMapping("saveAttr")
+    @ResponseBody
+    public String saveAttr(BaseAttrInfo baseAttrInfo) {
+        attrInfoService.saveAttr(baseAttrInfo);
+        return "Success";
+    }
+
+    //保存编辑属性
+    @RequestMapping("saveEditAttr")
+    @ResponseBody
+    public String saveEditAttr(BaseAttrInfo baseAttrInfo) {
+        String a = "aaa";
+       attrInfoService.saveEditAttr(baseAttrInfo);
+
+        return "Success";
+    }
 }

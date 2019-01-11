@@ -1,6 +1,8 @@
 package com.atguigu.gmall.bean;
 
-public class UserAddress {
+import java.io.Serializable;
+
+public class UserAddress  implements Serializable{
     Integer id;
     String user_address;
     Integer userId;
