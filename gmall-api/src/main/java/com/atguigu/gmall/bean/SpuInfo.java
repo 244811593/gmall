@@ -77,6 +77,19 @@ public class SpuInfo implements Serializable {
     public void setSpuImageList(List<SpuImage> spuImageList) {
         this.spuImageList = spuImageList;
     }
+
+    @Override
+    public String toString() {
+        return "SpuInfo{" +
+                "id='" + id + '\'' +
+                ", spuName='" + spuName + '\'' +
+                ", description='" + description + '\'' +
+                ", catalog3Id='" + catalog3Id + '\'' +
+                ", spuSaleAttrList=" + spuSaleAttrList +
+                ", spuImageList=" + spuImageList +
+                '}';
+    }
 }
+
 
 

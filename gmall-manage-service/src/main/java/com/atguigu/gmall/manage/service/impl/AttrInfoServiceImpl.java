@@ -46,7 +46,13 @@ public class AttrInfoServiceImpl implements BaseAttrInfoService {
         BaseAttrInfo baseAttrInfo = new BaseAttrInfo();
         baseAttrInfo.setCatalog3Id(catalog3Id);
         List<BaseAttrInfo> baseAttrInfoList=baseAttrInfoMapper.select(baseAttrInfo);
-
+        for (BaseAttrInfo baseAttrInfo1:baseAttrInfoList ) {
+            String attrId = baseAttrInfo1.getId();
+            BaseAttrValue baseAttrValue = new BaseAttrValue();
+            baseAttrValue.setAttrId(attrId);
+            List<BaseAttrValue> baseAttrValueList = baseAttrValueMapper.select(baseAttrValue);
+            baseAttrInfo1.setAttrValueList(baseAttrValueList);
+        }
         return baseAttrInfoList;
     }
 //保存平台属性和属性值
@@ -75,6 +81,7 @@ public class AttrInfoServiceImpl implements BaseAttrInfoService {
     public void saveEditAttr(BaseAttrInfo baseAttrInfo) {
         String AttrId = baseAttrInfo.getId();
         //修改后的属性
+        baseAttrInfoMapper.updateByPrimaryKey(baseAttrInfo);
         List<BaseAttrValue> attrValueList = baseAttrInfo.getAttrValueList();
         //按照attrId查询所有的value对象集合
         BaseAttrValue baseAttrValue1 = new BaseAttrValue();

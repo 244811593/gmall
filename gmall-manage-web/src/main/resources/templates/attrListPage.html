@@ -9,8 +9,8 @@
        data-options="toolbar:'#tb',singleSelect:true,collapsible:true,url:'datagrid_data1.json',method:'get'">
     <thead>
     <tr>
-        <th data-options="field:'id',width:80">平台属性ID</th>
-        <th data-options="field:'attrName',width:100">平台属性名称</th>
+        <th data-options="field:'id',width:140">平台属性ID</th>
+        <th data-options="field:'attrName',width:180">平台属性名称</th>
     </tr>
     </thead>
 </table>
@@ -41,7 +41,7 @@
     <br/><br/>
 </div>
 <!--添加窗口-->
-<div id="dd" class="easyui-dialog" title="My Dialog" style="width:800px;height:400px;"
+<div id="dd" class="easyui-dialog" title="添加属性" style="width:800px;height:400px;"
      data-options="buttons:'#bb',closed:true,iconCls:'icon-save',resizable:true,modal:true">
     属性名称 <input id="attrName" class="easyui-textbox" style="width:300px">
     <br>
@@ -49,7 +49,7 @@
 </div>
 
 <!--编辑窗口-->
-<div id="editAttrPage" class="easyui-dialog" title="My Dialog" style="width:800px;height:400px;"
+<div id="editAttrPage" class="easyui-dialog" title="编辑属性" style="width:800px;height:400px;"
      data-options="buttons:'#cc',closed:true,iconCls:'icon-save',resizable:true,modal:true">
     属性名称 <input id="EditaAttrName" class="easyui-textbox" style="width:300px">
     <br>
@@ -68,9 +68,21 @@
 </div>
 
 <script language="JavaScript">
+
     //编辑按钮
     function editInfoPage() {
+
+        //必须选择3级分类和想编辑的属性
+
+        var catalog3Id = $("#ctg3ForAttrList").combobox("getValue");
+        if (!catalog3Id) {
+            catalog3Id = '61';
+        }
+
         var row = $('#dg').datagrid('getSelected');
+        if(!row){
+            alert("请先选择想要编辑的属性！")
+        }
         var attrName=row.attrName;
         var attrId=row.id;
         $("#EditaAttrName").textbox("setValue",attrName);
@@ -141,7 +153,7 @@
         var rows = $('#ed_av').datagrid('getRows');
         $(rows).each(function (i, BaseAttrValue) {
             //每一组都是一个BaseAttrValue对象
-            attrJSON["attrValueList[" + i + "].id"] = BaseAttrValue.id;
+
             attrJSON["attrValueList[" + i + "].valueName"] = BaseAttrValue.valueName;
         });
         //将数据通过异步请求发送到后端

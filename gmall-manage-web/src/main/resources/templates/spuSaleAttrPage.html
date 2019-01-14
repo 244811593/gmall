@@ -7,25 +7,25 @@
 <body>
 <!-----------------弹出框----------------------------->
 <div id="spuSaleAttr_dlg" class="easyui-dialog" title="编辑销售属性" style="width:500px;height:400px;"
-     closed="true"  data-options="iconCls:'icon-save',resizable:true,modal:false" buttons="#spuSaleAttrBtns" >
+     closed="true" data-options="iconCls:'icon-save',resizable:true,modal:false" buttons="#spuSaleAttrBtns">
     <br/><br/>
     <!------------------从基本销售属性中选择------------->
-    销售属性：  <select name="saleAttr" id="saleAttrSelect"  class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'baseSaleAttrList'" style="width:100px">  </select>
+    销售属性： <select name="saleAttr" id="saleAttrSelect" class="easyui-combobox"
+                  data-options="valueField:'id',textField:'name',url:'baseSaleAttrList'" style="width:100px"> </select>
     <br/><br/>
 
 
     <!----------------销售属性值列表---------------------------->
     <table id="spuSaleAttrValueDg" class="easyui-datagrid" title="销售属性值列表"
-           data-options="singleSelect:true,method:'get',toolbar:'#spuSaleAttrValueTootbar'" ></table>
-
-
+           data-options="singleSelect:true,method:'get',toolbar:'#spuSaleAttrValueTootbar'"></table>
 
 
     <!----------------销售属性值列表工具栏----------------------->
-    <div id="spuSaleAttrValueTootbar" style="padding:5px;height:auto"  >
+    <div id="spuSaleAttrValueTootbar" style="padding:5px;height:auto">
         <div style="margin-bottom:5px">
-            <a href="#" id="spuSaleAttrValueAddBtn" class="easyui-linkbutton" iconCls="icon-add" onclick="addSpuSaleAttrValue()" plain="true">添加</a>
-            <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="removeSpuSaleAttrValue()" >删除</a>
+            <a href="#" id="spuSaleAttrValueAddBtn" class="easyui-linkbutton" iconCls="icon-add"
+               onclick="addSpuSaleAttrValue()" plain="true">添加</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="removeSpuSaleAttrValue()">删除</a>
         </div>
     </div>
 
@@ -35,5 +35,83 @@
         <a href="#" class="easyui-linkbutton" onclick="closeSpuSaleAttr()">关 闭</a>
     </div>
 </div>
+
+<script language="JavaScript">
+    //初始化添加销售属性界面
+    function initSpuSaleAttrDlg() {
+        //初始化行
+        $('#spuSaleAttrValueDg').datagrid('loadData',{
+            total:0,rows:[]
+        });
+        spuSaleAttrValueDg = $("#spuSaleAttrValueDg").datagrid({
+            columns: [[
+                {field: 'id', title: '编号', width: 100},
+                {field: 'spuId', title: 'spuId', width: 100},
+                {field: 'saleAttrId', title: '销售属性id', width: 100},
+                {
+                    field: 'saleAttrValueName', title: '销售属性值名称', width: 100,
+                    editor: {
+                        type: 'validatebox',
+                        options: {required: true}
+                    }
+                }
+            ]],
+            onDblClickRow: function (rowIndex, rowData) {
+                // 进入当前行的，valuename的编辑状态
+                spuSaleAttrValueDg.datagrid("beginEdit", rowIndex);
+                //设定当失去焦点时,退出编辑状态
+                var valueName = rowData.valueName;
+                $("input.datagrid-editable-input").val(valueName).bind("blur", function (evt) {
+                    spuSaleAttrValueDg.datagrid('endEdit', rowIndex);
+                });
+            }
+
+        });
+    }
+
+    function addSpuSaleAttrValue() {
+
+        //添加一行
+        $('#spuSaleAttrValueDg').datagrid('appendRow', {
+
+            id: '',
+            spuId: '',
+            saleAttrId: '',
+            valueName: '请输入销售属性值名'
+        });
+    }
+
+    function removeSpuSaleAttrValue() {
+        //删除一行
+        //选择的行
+        var row = $('#spuSaleAttrValueDg').datagrid('getSelected');
+        //所在行索引
+        var rowIndex = $('#spuSaleAttrValueDg').datagrid('getRowIndex', row);
+        $('#spuSaleAttrValueDg').datagrid('deleteRow', rowIndex);
+    }
+
+
+    //保存添加销售属性
+    function saveSpuSaleAttr() {
+        // 获得当前已经添加的销售属性（下拉框的id和name）的id和销售属性值的数据集合
+        var saleAttrId = $("#saleAttrSelect").combobox("getValue");
+        var saleAttrName = $("#saleAttrSelect").combobox("getText");
+        //所有新添加的销售属性值列表
+        var spuSaleAttrValueJson = $("#spuSaleAttrValueDg").datagrid("getData")
+        //暂存在上一界面
+        $("#spuSaleAttrDg").datagrid('appendRow', {
+            saleAttrId: saleAttrId,
+            saleAttrName: saleAttrName,
+            spuSaleAttrValueJson: spuSaleAttrValueJson
+        })
+        console.log(spuSaleAttrValueJson)
+        //关闭对话框
+        $("#spuSaleAttr_dlg").dialog("close")
+
+    }
+
+</script>
+
+
 </body>
 </html>
