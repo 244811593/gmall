@@ -24,7 +24,7 @@ SkuInfoService skuInfoService;
     @RequestMapping("saveSku")
     @ResponseBody
     public String saveSku(SkuInfo skuInfo){
-
+        skuInfoService.saveSku(skuInfo);
         return "success";
     }
 }

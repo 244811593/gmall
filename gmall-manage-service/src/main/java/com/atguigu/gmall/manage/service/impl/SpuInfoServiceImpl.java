@@ -56,5 +56,38 @@ public class SpuInfoServiceImpl implements SpuInfoService {
         return spuImages;
     }
 
+    @Override
+    public void saveSpu(SpuInfo spuInfo) {
+        spuInfoMapper.insertSelective(spuInfo);
+        String spuId = spuInfo.getId();
+        //保存图片
+        List<SpuImage> spuImageList = spuInfo.getSpuImageList();
+        for (SpuImage spuImage:spuImageList ) {
+            spuImage.setSpuId(spuId);
+            spuImageMapper.insert(spuImage);
+        }
+        //保存销售属性和销售属性值
+        List<SpuSaleAttr> spuSaleAttrList = spuInfo.getSpuSaleAttrList();
+        for (SpuSaleAttr spuSaleAttr:spuSaleAttrList ) {
+            spuSaleAttr.setSpuId(spuId);
+            spuSaleAttrMapper.insertSelective(spuSaleAttr);
+            //销售属性 对应的销售属性值
+            List<SpuSaleAttrValue> spuSaleAttrValueList = spuSaleAttr.getSpuSaleAttrValueList();
+            for (SpuSaleAttrValue spuSaleAttrValue:spuSaleAttrValueList) {
+                spuSaleAttrValue.setSpuId(spuId);
+                spuSaleAttrValueMapper.insertSelective(spuSaleAttrValue);
+            }
+
+        }
+
+    }
+
+    @Override
+    public List<SpuSaleAttr> spuSaleAttrListCheckBySku(String spuId,String skuId ) {
+
+        List<SpuSaleAttr>  spuSaleAttrList = spuSaleAttrMapper.selectSpuSaleAttrListCheckBySku(spuId,skuId);
+        return spuSaleAttrList;
+    }
+
 
 }

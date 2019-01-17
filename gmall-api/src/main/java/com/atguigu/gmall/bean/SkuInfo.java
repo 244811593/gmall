@@ -17,13 +17,13 @@ public class SkuInfo  implements Serializable {
     String id;
 
     @Column
-    String spuId;
+    String spuId;//小米
 
     @Column
     BigDecimal price;
 
     @Column
-    String skuName;
+    String skuName;//6+128等等小米手机
 
     @Column
     BigDecimal weight;
@@ -32,19 +32,19 @@ public class SkuInfo  implements Serializable {
     String skuDesc;
 
     @Column
-    String catalog3Id;
+    String catalog3Id;//分类手机
 
     @Column
     String skuDefaultImg;
 
     @Transient
-    List<SkuImage> skuImageList;
+    List<SkuImage> skuImageList;//所有图片
 
     @Transient
-    List<SkuAttrValue> skuAttrValueList;
+    List<SkuAttrValue> skuAttrValueList;//销售属性 内存  颜色
 
     @Transient
-    List<SkuSaleAttrValue> skuSaleAttrValueList;
+    List<SkuSaleAttrValue> skuSaleAttrValueList;//销售属性值  1g2g   红 白
 
 
 

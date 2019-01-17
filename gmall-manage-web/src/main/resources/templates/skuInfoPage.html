@@ -57,9 +57,21 @@
 
     //保存
     function saveSku() {
+        var spu = $("#spulist_dg").datagrid("getSelected");
         var skuJson = {};
-        //封装平台属性
-        // 获取平台属性
+        skuJson["spuId"] = spu.id;
+        skuJson["price"] = $("#price").numberbox("getValue");
+        skuJson["skuName"] =$("#skuName").textbox("getValue") ;
+        skuJson["weight"] = $("#weight").textbox("getValue");
+        skuJson["skuDesc"] = $("#skuDesc").textbox("getValue");
+        var catalog3Id = $("#ctg3ForSpuList").combobox("getValue");
+        if(!catalog3Id){
+            catalog3Id = '61';
+        }
+        skuJson["catalog3Id"] = catalog3Id;
+
+
+        // 获取平台属性id集合
         var spans = $("#attrInfoGroup").children("span");
         $(spans).each(function (i,attr) {
             var attrId = $(attr).attr("attrId");
@@ -67,36 +79,45 @@
             skuJson["skuAttrValueList["+i+"].valueId"]= $(spans).children("select").val();
         });
 
-        // 获取销售属性
+        // 获取销售属性id集合
         var spans = $("#spuSaleAttrGroup").children("span");
         $(spans).each(function (i,spuSaleAttr) {
             var spuSaleAttrId = $(spuSaleAttr).attr("spuSaleAttrId");
             skuJson["skuSaleAttrValueList["+i+"].saleAttrId"]= spuSaleAttrId;
-            skuJson["skuSaleAttrValueList["+i+"].saleAttrValueId"]= $(spans).children("select").val();
+            skuJson["skuSaleAttrValueList["+i+"].saleAttrValueId"]= $(spuSaleAttr).children("select").val();
 
             // 封装名称
-            var spuSaleAttrName = $(spuSaleAttr).attr("spuSaleAttrName");
-            var spuSaleAttrValueName = $(spans).children("select").find("option:selected").text();
-            skuJson["skuSaleAttrValueList["+i+"].saleAttrName"]= spuSaleAttrName;
-            skuJson["skuSaleAttrValueList["+i+"].saleAttrValueName"]= spuSaleAttrValueName;
+            var SaleAttrName = $(spuSaleAttr).attr("spuSaleAttrName");
+            var SaleAttrValueName = $(spuSaleAttr).children("select").find("option:selected").text();
+            skuJson["skuSaleAttrValueList["+i+"].saleAttrName"]= SaleAttrName;
+            skuJson["skuSaleAttrValueList["+i+"].saleAttrValueName"]= SaleAttrValueName;
         });
 
-        // 图片列表
         var skuImgs = $("#skuImgDg").datagrid("getChecked");
-
-        // 默认图片
+        // 默认图片(skuInfo表中的数据)
         var defaultImg = $("input[name='isDefault']:checked").val();
+        if(!defaultImg){
+            defaultImg =  $(skuImgs)[0].imgUrl;
+        }
+        skuJson["skuDefaultImg"] = defaultImg;
+
+
+        // 图片列表集合(sku图片表数据)
+
         $(skuImgs).each(function (i,skuImg) {
-            if(i==0){
-                defaultImg = skuImg.imgUrl;
+            skuJson["skuImageList["+i+"].imgName"] = skuImg.imgName;
+            skuJson["skuImageList["+i+"].imgUrl"] = skuImg.imgUrl;
+            skuJson["skuImageList["+i+"].spuImgId"] = skuImg.id;
+            if(skuImg.imgUrl==defaultImg){
+                skuJson["skuImageList["+i+"].isDefault"] = "1";
             }
         });
-        console.log(JSON.stringify(skuImg));
 
-        $.post("saveSku", skuJson, function (data) {
+        $.post("saveSku",skuJson,function (data) {
             alert(data);
+            // 关闭对话框
+            $("#sku_dlg").dialog("close");
         })
-
     }
 
     //初始化平台属性
@@ -108,7 +129,6 @@
                 var spanBegin = " <span  attrId='" + attr.id + "'>";
                 var attrName = attr.attrName;
                 var spanEnd = " </span>";
-
                 var selectBegin = "<select>";
                 var attrValueList = attr.attrValueList;
                 var options = "";

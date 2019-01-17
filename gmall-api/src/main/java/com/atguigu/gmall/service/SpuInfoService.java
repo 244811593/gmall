@@ -15,4 +15,8 @@ public interface SpuInfoService {
     List<SpuSaleAttr> spuSaleAttrList(String spuId);
 
     List<SpuImage> spuImageList(String spuId);
+
+    void saveSpu(SpuInfo spuInfo);
+
+    List<SpuSaleAttr> spuSaleAttrListCheckBySku(String spuId,String skuId);
 }

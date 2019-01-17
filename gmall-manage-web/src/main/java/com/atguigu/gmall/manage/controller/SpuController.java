@@ -42,9 +42,8 @@ public class SpuController {
     @RequestMapping("saveSpu")
     @ResponseBody
     public String saveSpu(SpuInfo spuInfo) {
-//        spuInfoService.saveSpu(spuInfo);
-        int size = spuInfo.getSpuSaleAttrList().size();
-        System.err.print(size);
+
+        spuInfoService.saveSpu(spuInfo);
         return "success";
     }
 
