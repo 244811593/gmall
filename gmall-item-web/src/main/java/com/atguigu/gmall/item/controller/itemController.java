@@ -30,19 +30,15 @@ public class itemController {
        List<SpuSaleAttr> spuSaleAttrList= spuInfoService.spuSaleAttrListCheckBySku(spuId,skuId);
         model.addAttribute("spuSaleAttrListCheckBySku", spuSaleAttrList);
         model.addAttribute("skuInfo", skuInfo);
-        // 隐藏一个hash表
-        List<SkuInfo> skuInfos = skuInfoService.getSkuSaleAttrValueListBySpu(spuId);
 
+        List<SkuInfo> skuInfos  = skuInfoService.getSkuSaleAttrValueListBySpu(spuId);
         Map<String,String> skuMap = new HashMap<>();
         for (SkuInfo sku : skuInfos) {
             String v = sku.getId();
-
             List<SkuSaleAttrValue> skuSaleAttrValues = sku.getSkuSaleAttrValueList();
-
             String k = "";
             for (SkuSaleAttrValue skuSaleAttrValue : skuSaleAttrValues) {
                 String valueId = skuSaleAttrValue.getSaleAttrValueId();
-
                 k = k + "|"+valueId;
             }
             skuMap.put(k,v);

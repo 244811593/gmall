@@ -18,5 +18,7 @@ public interface BaseAttrInfoService {
     List<BaseAttrValue> getAttrValueList(String attrId);
 
     void saveEditAttr(BaseAttrInfo baseAttrInfo);
+
+    List<BaseAttrInfo> getAttrValueByJoin(String join);
 }
 

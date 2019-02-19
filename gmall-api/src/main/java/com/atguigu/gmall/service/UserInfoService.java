@@ -7,17 +7,19 @@ import java.util.List;
 public interface UserInfoService {
 
 //查询所有
-    public List<UserInfo> getUserInfoListAll();
+     List<UserInfo> getUserInfoListAll();
 //添加
-    public void addUser(UserInfo userInfo);
+     void addUser(UserInfo userInfo);
 //更新
-    public void updateUser(String id,UserInfo userInfo);
+     void updateUser(String id,UserInfo userInfo);
 //根据用户id查询addressList
-    public List<UserAddress> getUserAddressList(String userId);
+     List<UserAddress> getUserAddressList(String userId);
 
 
+    UserInfo login(UserInfo userInfo);
 
+    void addUserCache(UserInfo user);
 
-
+    UserAddress getUserAddressById(String deliveryAddressId);
 }
 

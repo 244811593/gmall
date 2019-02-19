@@ -95,5 +95,11 @@ public class AttrInfoServiceImpl implements BaseAttrInfoService {
         }
     }
 
+    @Override
+    public List<BaseAttrInfo> getAttrValueByJoin(String join) {
+        List<BaseAttrInfo>baseAttrInfoList= baseAttrInfoMapper.selectAttrValueByJoin(join);
+        return baseAttrInfoList;
+    }
+
 
 }

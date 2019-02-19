@@ -15,4 +15,10 @@ public interface SkuInfoService {
     SkuInfo getItem(String skuId);
 
     List<SkuInfo> getSkuSaleAttrValueListBySpu(String spuId);
+
+    List<SkuInfo> skuListByCatalog3Id(String catalog3Id);
+
+    SkuInfo getSkuInfoBySkuId(String skuId);
+
+    SkuInfo getSkuById(String skuId);
 }
